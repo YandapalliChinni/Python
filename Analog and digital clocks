@@ -1,0 +1,84 @@
+n = input("Enter the required clock name: ")
+
+if n == 'analog clock':
+    import turtle
+    import time
+
+    wndw = turtle.Screen()
+    wndw.bgcolor('#FDB750')
+    wndw.setup(width=600, height=600)
+    wndw.title("Analogue Clock")
+    wndw.tracer(0)
+
+    pen = turtle.Turtle()
+    pen.hideturtle()
+    pen.speed(0)
+    pen.pensize(3)
+
+    pen1 = turtle.Turtle()
+    pen1.write("SRM UNIVERSITY", font=("Calibiri", 20, "bold"), align="center")
+
+    def draw_clock(hr, mn, sec, pen):
+        pen.up()
+        pen.goto(0, 210)
+        pen.setheading(180)
+        pen.color('#010100')
+        pen.pendown()
+        pen.circle(210)
+        pen.width(11)
+        pen.up()
+        pen.goto(0, 0)
+        pen.setheading(90)
+
+        for _ in range(12):
+            pen.fd(190)
+            pen.pendown()
+            pen.fd(20)
+            pen.penup()
+            pen.goto(0, 0)
+            pen.rt(30)
+
+        hands = [('#3E004A', 80, 12), ('#4120A9', 115, 60), ('#F9521E', 155, 60)]
+        time_set = (hr, mn, sec)
+
+        for hand in hands:
+            time_part = time_set[hands.index(hand)]
+            angle = (time_part / hand[2]) * 360
+            pen.penup()
+            pen.goto(0, 0)
+            pen.color(hand[0])
+            pen.setheading(90)
+            pen.rt(angle)
+            pen.pendown()
+            pen.fd(hand[1])
+
+    while True:
+        hr = int(time.strftime("%I"))
+        mn = int(time.strftime("%M"))
+        sec = int(time.strftime("%S"))
+        draw_clock(hr, mn, sec, pen)
+        wndw.update()
+        time.sleep(1)
+        pen.clear()
+    wndw.mainloop()
+
+elif n == 'digital clock':
+    from tkinter import *
+    from tkinter.ttk import *
+    from time import strftime
+
+    root = Tk()
+    root.title('Digital Clock')
+
+    def time():
+        string = strftime('%H:%M:%S %p')
+        lbl.config(text=string)
+        lbl.after(1000, time)
+
+    lbl = Label(root, font=('calibri', 90, 'bold'), background='#44EE77', foreground='white')
+    lbl.pack(anchor='center')
+    time()
+    mainloop()
+
+else:
+    print("Invalid input for getting analog or digital clock")
